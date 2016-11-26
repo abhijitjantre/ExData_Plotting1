@@ -1,0 +1,20 @@
+Txtfile <- "E:/Documents/Coursera/Exploratory Data Analysis/household_power_consumption.txt"
+data <- read.table(Txtfile, header=TRUE, sep=";", stringsAsFactors=FALSE, dec=".")
+data1 <- data[data$Date %in% c("1/2/2007","2/2/2007") ,]
+datetime <- strptime(paste(data1$Date, data1$Time, sep=" "), "%d/%m/%Y %H:%M:%S")
+voltage <- as.numeric(data1$Voltage)
+globalreactivepower  <- as.numeric(data1$Global_reactive_power)
+globalactivepower <- as.numeric(data1$Global_active_power)
+submetering1 <- as.numeric(data1$Sub_metering_1)
+submetering2 <- as.numeric(data1$Sub_metering_2)
+submetering3 <- data1$Sub_metering_3
+png("Plot 4.png", width=480, height=480)
+par(mfrow=c(2,2))
+plot(datetime, globalactivepower, type="l", xlab="", ylab="Global Active Power (kilowatts)")
+plot(datetime,voltage,type="l",xlab = "datetime",ylab = "Voltage")
+plot(datetime,submetering1,type="l",xlab = "",ylab = "Energy Submetering")
+lines(datetime,submetering2,type = "l",col="red")
+lines(datetime,submetering3,type = "l", col="blue")
+legend("topright",c("sub_metering_1","sub_metering_2","sub_metering_3"),lty = 1,lwd=3, col = c("black","red","blue"))
+plot(datetime,globalreactivepower,type="l",xlab = "datetime",ylab = "Global_reactive_power")
+dev.off()
